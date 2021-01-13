@@ -64,6 +64,12 @@ class S3RemoteAssetStore
                 $key;
         }
 
+        if (isset($config['publicEndpoint'])) {
+            return $config['publicEndpoint'] . '/' .
+                $config['root'] . '/' .
+                $key;
+        }
+        
         return 'https://s3-' .
             $config['region'] .
             '.amazonaws.com/' .
@@ -95,6 +101,7 @@ class S3RemoteAssetStore
             $this->s3 = new S3Client([
                 'version' => '2006-03-01',
                 'region' => $config['region'],
+                'endpoint' => isset($config['endpoint']) ? $config['endpoint'] : null,
                 'credentials' => [
                     'key' => $config['key'],
                     'secret' => $config['secret'],
